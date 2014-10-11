@@ -2,8 +2,10 @@ var Playbasis = (function () {
     function Playbasis(apiKey) {
         this.apiKey = apiKey;
         this.BASE_URL = "https://api.pbapp.net/";
-        this.apiKey = "?api_key=" + apiKey;
     }
+    Playbasis.prototype.auth = function (apiSecret, callback) {
+        return this.callPost("Auth", {api_key: this.apiKey, api_secret: apiSecret}, callback);
+    };
     Playbasis.prototype.player = function (playerId, callback) {
         return this.call("Player/" + playerId, '', callback);
     };
@@ -96,10 +98,27 @@ var Playbasis = (function () {
     Playbasis.prototype.actionConfig = function (callback) {
         return this.call("Engine/actionConfig", '', callback);
     };
+    Playbasis.prototype.rule = function (token, action, playerId, url, reward, quantity, callback) {
+        url = url || "";
+        reward = reward || "";
+        quantity = quantity || "";
+        return this.callPost("Engine/rule", {token: token, action: action, player_id: playerId, url: url, reward: reward, quantity: quantity}, callback);
+    };
+    
     Playbasis.prototype.call = function (method, query, callback) {
-        var url = this.BASE_URL + method + this.apiKey + query;
+        var url = this.BASE_URL + method + "?api_key=" + this.apiKey + query;
         $.ajax(url, {
             type: "GET",
+            url: url,
+            success: callback
+        });
+        return this;
+    };
+    Playbasis.prototype.callPost = function (method, data, callback) {
+        var url = this.BASE_URL + method;
+        $.ajax(url, {
+            type: "POST",
+            data: data,
             url: url,
             success: callback
         });

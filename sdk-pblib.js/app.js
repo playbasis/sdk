@@ -22,6 +22,10 @@ window.onload = function () {
     var greeter = new Greeter(el);
     greeter.start();
     var pb = new Playbasis('API_KEY');
+    pb.auth('API_SECRET', function (result) {
+        console.log("pb.auth");
+        console.log(result);
+    });
     pb.player('1', function (result) {
         console.log("pb.player");
         console.log(result);
