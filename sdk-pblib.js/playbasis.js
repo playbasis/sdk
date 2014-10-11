@@ -98,6 +98,13 @@ var Playbasis = (function () {
     Playbasis.prototype.actionConfig = function (callback) {
         return this.call("Engine/actionConfig", '', callback);
     };
+    Playbasis.prototype.rule = function (token, action, playerId, url, reward, quantity, callback) {
+        url = url || "";
+        reward = reward || "";
+        quantity = quantity || "";
+        return this.callPost("Engine/rule", {token: token, action: action, player_id: playerId, url: url, reward: reward, quantity: quantity}, callback);
+    };
+    
     Playbasis.prototype.call = function (method, query, callback) {
         var url = this.BASE_URL + method + "?api_key=" + this.apiKey + query;
         $.ajax(url, {
