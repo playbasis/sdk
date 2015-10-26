@@ -354,7 +354,7 @@ class Playbasis
      */
     public function badges()
     {
-        return $this->call("Badge" . $this->apiKeyParam);
+        return $this->call("Badges" . $this->apiKeyParam);
     }
 
     /*
